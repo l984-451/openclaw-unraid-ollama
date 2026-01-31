@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>OpenClaw</Name>
+  <Repository>ghcr.io/openclaw/openclaw:latest</Repository>
+  <Registry>https://github.com/openclaw/openclaw/pkgs/container/openclaw</Registry>
+  <Network>bridge</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://forums.unraid.net/topic/196865-support-openclaw-ai-personal-assistant</Support>
+  <Project>https://github.com/openclaw/openclaw</Project>
+  <Overview>OpenClaw (formerly ClawdBot/MoltBot) is a powerful AI assistant gateway that connects Claude and other LLMs to messaging platforms like Discord, Telegram, WhatsApp, and more. Features include file access, shell commands, web browsing, cron jobs, and a web-based Control UI. Now with Ollama support for local LLMs!&#xD;&#xD;IMPORTANT: To access the Control UI, add your token to the URL: http://YOUR-IP:18789/?token=YOUR-GATEWAY-TOKEN&#xD;&#xD;OLLAMA SETUP: Set Ollama Base URL to http://172.17.0.1:11434/v1 (or your Unraid IP) and Ollama API Key to any value like 'ollama-local' to enable local models.</Overview>
+  <Category>Productivity: Tools: AI</Category>
+  <WebUI>http://[IP]:[PORT:18789]/</WebUI>
+  <Icon>https://raw.githubusercontent.com/jdhill777/openclaw-unraid/master/openclaw-icon.png</Icon>
+  <Screenshot>https://raw.githubusercontent.com/jdhill777/openclaw-unraid/master/screenshot.png</Screenshot>
+  <ExtraParams>--user root --hostname OpenClaw</ExtraParams>
+  <PostArgs>sh -c "SCRIPT_URL=${STARTUP_SCRIPT_URL:-https://raw.githubusercontent.com/l984-451/openclaw-unraid-ollama/main/startup-config.js}; SCRIPT_PATH=/tmp/openclaw-startup.js; node -e \"const https=require('https'),http=require('http'),fs=require('fs'),url=require('url');const u=new URL(process.argv[1]);const mod=u.protocol==='https:'?https:http;mod.get(u,(r)=>{if(r.statusCode>=300&amp;&amp;r.statusCode&lt;400&amp;&amp;r.headers.location){mod.get(r.headers.location,(r2)=>{let d='';r2.on('data',c=>d+=c);r2.on('end',()=>fs.writeFileSync(process.argv[2],d))}).on('error',()=>process.exit(1))}else{let d='';r.on('data',c=>d+=c);r.on('end',()=>fs.writeFileSync(process.argv[2],d))}}).on('error',()=>process.exit(1))\" \"$SCRIPT_URL\" \"$SCRIPT_PATH\" &amp;&amp; node \"$SCRIPT_PATH\" &amp;&amp; node dist/index.js gateway --bind lan"</PostArgs>
+  <DonateText>Support the template maintainer</DonateText>
+  <DonateLink>https://buymeacoffee.com/jdhill777</DonateLink>
+  <Description>OpenClaw (formerly ClawdBot/MoltBot) is a powerful AI assistant gateway that connects Claude and other LLMs to messaging platforms like Discord, Telegram, WhatsApp, and more. Now with Ollama support for local LLMs! Features include file access, shell commands, web browsing, cron jobs, and a web-based Control UI. To access the Control UI: http://YOUR-IP:18789/?token=YOUR-GATEWAY-TOKEN</Description>
+
+  <!-- Port -->
+  <Config Name="Control UI Port" Target="18789" Default="18789" Mode="tcp" Description="Port for Control UI and Gateway API" Type="Port" Display="always" Required="true" Mask="false">18789</Config>
+
+  <!-- Volume Mappings -->
+  <Config Name="Config Path" Target="/root/.openclaw" Default="/mnt/user/appdata/openclaw/config" Mode="rw" Description="Path to store OpenClaw configuration files" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Workspace Path" Target="/home/node/clawd" Default="/mnt/user/appdata/openclaw/workspace" Mode="rw" Description="Path for agent workspace (files, memory, projects)" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Projects Path" Target="/projects" Default="/mnt/user/appdata/openclaw/projects" Mode="rw" Description="Optional path for coding projects" Type="Path" Display="advanced" Required="false" Mask="false"/>
+
+  <!-- Required Settings -->
+  <Config Name="Gateway Token" Target="OPENCLAW_GATEWAY_TOKEN" Default="" Mode="" Description="Secret token for authentication. Generate with: openssl rand -hex 24. To access Control UI: http://IP:18789/?token=YOUR_TOKEN" Type="Variable" Display="always" Required="true" Mask="true"/>
+
+  <!-- Cloud LLM API Keys -->
+  <Config Name="Anthropic API Key" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="API key for Claude models. Get from console.anthropic.com. Recommended for best experience." Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="OpenAI API Key" Target="OPENAI_API_KEY" Default="" Mode="" Description="API key for GPT models. Get from platform.openai.com" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="OpenRouter API Key" Target="OPENROUTER_API_KEY" Default="" Mode="" Description="API key for OpenRouter - access to Claude, GPT, Llama, and 100+ models. Get from openrouter.ai" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Gemini API Key" Target="GEMINI_API_KEY" Default="" Mode="" Description="API key for Google Gemini models. Get from aistudio.google.com" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="Groq API Key" Target="GROQ_API_KEY" Default="" Mode="" Description="API key for Groq (fast Llama/Mixtral inference). Get from console.groq.com" Type="Variable" Display="always" Required="false" Mask="true"/>
+
+  <!-- Ollama (Local LLM) Configuration -->
+  <Config Name="Ollama Base URL" Target="OLLAMA_BASE_URL" Default="" Mode="" Description="Ollama server URL WITH /v1 suffix. For Ollama on same Unraid: http://172.17.0.1:11434/v1 or http://YOUR_UNRAID_IP:11434/v1. Leave empty to disable Ollama." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Ollama API Key" Target="OLLAMA_API_KEY" Default="" Mode="" Description="Set to any value (e.g., 'ollama-local') to enable Ollama. Leave empty to disable." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Ollama Model" Target="OLLAMA_MODEL" Default="" Mode="" Description="Default Ollama model (e.g., qwen2.5-coder:32b, llama3.3, deepseek-r1:32b). Must be pulled in Ollama first. Leave empty to choose in Control UI." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Ollama Context Window" Target="OLLAMA_CONTEXT_WINDOW" Default="32768" Mode="" Description="Context window size for Ollama models. Recommended: 16384-65536 depending on your VRAM." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+
+  <!-- Optional: Channel Tokens -->
+  <Config Name="Discord Bot Token" Target="DISCORD_BOT_TOKEN" Default="" Mode="" Description="(Optional) Discord bot token. Can also configure via Control UI." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="Telegram Bot Token" Target="TELEGRAM_BOT_TOKEN" Default="" Mode="" Description="(Optional) Telegram bot token from @BotFather. Can also configure via Control UI." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+
+  <!-- Advanced Settings -->
+  <Config Name="Gateway Port" Target="OPENCLAW_GATEWAY_PORT" Default="18789" Mode="" Description="Port for gateway API and Control UI." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="Web Search API Key" Target="BRAVE_API_KEY" Default="" Mode="" Description="(Optional) Brave Search API key. Free tier: 2000 queries/month at brave.com/search/api" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="Startup Script URL" Target="STARTUP_SCRIPT_URL" Default="" Mode="" Description="(Advanced) Custom URL for startup script. Leave empty to use default from GitHub." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+</Container>
