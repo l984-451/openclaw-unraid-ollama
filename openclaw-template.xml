@@ -14,7 +14,7 @@
   <Icon>https://raw.githubusercontent.com/jdhill777/openclaw-unraid/master/openclaw-icon.png</Icon>
   <Screenshot>https://raw.githubusercontent.com/jdhill777/openclaw-unraid/master/screenshot.png</Screenshot>
   <ExtraParams>--user root --hostname OpenClaw</ExtraParams>
-  <PostArgs>sh -c "SCRIPT_URL=${STARTUP_SCRIPT_URL:-https://raw.githubusercontent.com/l984-451/openclaw-unraid-ollama/main/startup-config.js}; SCRIPT_PATH=/tmp/openclaw-startup.js; wget -qO $SCRIPT_PATH $SCRIPT_URL || curl -sL $SCRIPT_URL -o $SCRIPT_PATH; node $SCRIPT_PATH; node dist/index.js gateway --bind lan"</PostArgs>
+  <PostArgs>sh -c "wget -qO /tmp/startup.js https://raw.githubusercontent.com/l984-451/openclaw-unraid-ollama/main/startup-config.js || curl -sL -o /tmp/startup.js https://raw.githubusercontent.com/l984-451/openclaw-unraid-ollama/main/startup-config.js; node /tmp/startup.js; node dist/index.js gateway --bind lan"</PostArgs>
   <DonateText>Support the template maintainer</DonateText>
   <DonateLink>https://buymeacoffee.com/jdhill777</DonateLink>
   <Description>OpenClaw (formerly ClawdBot/MoltBot) is a powerful AI assistant gateway that connects Claude and other LLMs to messaging platforms like Discord, Telegram, WhatsApp, and more. Now with Ollama support for local LLMs! Features include file access, shell commands, web browsing, cron jobs, and a web-based Control UI. To access the Control UI: http://YOUR-IP:18789/?token=YOUR-GATEWAY-TOKEN</Description>
