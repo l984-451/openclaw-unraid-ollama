@@ -141,14 +141,22 @@ function main() {
         ];
       }
 
-      // Set as default model if no default is configured
+      // Always set the model from env var (env var takes priority)
       if (!config.agents) config.agents = {};
       if (!config.agents.defaults) config.agents.defaults = {};
-      if (!config.agents.defaults.model) {
+
+      const newModel = `ollama/${ollamaModel}`;
+      const currentModel = config.agents.defaults.model?.primary;
+
+      if (currentModel !== newModel) {
         config.agents.defaults.model = {
-          primary: `ollama/${ollamaModel}`
+          primary: newModel
         };
-        console.log(`   Set as default model: ollama/${ollamaModel}`);
+        if (currentModel) {
+          console.log(`   Updated default model: ${currentModel} → ${newModel}`);
+        } else {
+          console.log(`   Set as default model: ${newModel}`);
+        }
       }
     }
 
