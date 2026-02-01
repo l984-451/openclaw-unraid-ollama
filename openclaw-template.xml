@@ -26,6 +26,7 @@
   <Config Name="Config Path" Target="/root/.openclaw" Default="/mnt/user/appdata/openclaw/config" Mode="rw" Description="Path to store OpenClaw configuration files" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Workspace Path" Target="/home/node/clawd" Default="/mnt/user/appdata/openclaw/workspace" Mode="rw" Description="Path for agent workspace (files, memory, projects)" Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Projects Path" Target="/projects" Default="/mnt/user/appdata/openclaw/projects" Mode="rw" Description="Optional path for coding projects" Type="Path" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="Homebrew Path" Target="/home/linuxbrew/.linuxbrew" Default="/mnt/user/appdata/openclaw/homebrew" Mode="rw" Description="Persistent Homebrew packages for skills requiring Go, npm, etc. Auto-installs on first start (~60 sec)." Type="Path" Display="advanced" Required="false" Mask="false"/>
 
   <!-- Required Settings -->
   <Config Name="Gateway Token" Target="OPENCLAW_GATEWAY_TOKEN" Default="" Mode="" Description="Secret token for authentication. Generate with: openssl rand -hex 24. To access Control UI: http://IP:18789/?token=YOUR_TOKEN" Type="Variable" Display="always" Required="true" Mask="true"/>
@@ -49,6 +50,6 @@
 
   <!-- Advanced Settings -->
   <Config Name="Gateway Port" Target="OPENCLAW_GATEWAY_PORT" Default="18789" Mode="" Description="Port for gateway API and Control UI." Type="Variable" Display="advanced" Required="false" Mask="false"/>
-  <Config Name="Web Search API Key" Target="BRAVE_API_KEY" Default="" Mode="" Description="(Optional) Brave Search API key. Free tier: 2000 queries/month at brave.com/search/api" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="Web Search API Key" Target="WEB_SEARCH_API_KEY" Default="" Mode="" Description="(Optional) Brave Search API key for web search. Free tier: 2000 queries/month at brave.com/search/api" Type="Variable" Display="advanced" Required="false" Mask="true"/>
   <Config Name="Startup Script URL" Target="STARTUP_SCRIPT_URL" Default="" Mode="" Description="(Advanced) Custom URL for startup script. Leave empty to use default from GitHub." Type="Variable" Display="advanced" Required="false" Mask="false"/>
 </Container>

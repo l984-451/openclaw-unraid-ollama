@@ -91,9 +91,30 @@ function main() {
     }
   };
 
+  // Default agent settings with tools enabled
+  const agentDefaults = {
+    agents: {
+      defaults: {
+        tools: {
+          profile: 'standard',
+          allow: ['read', 'write', 'edit', 'exec', 'web', 'browser'],
+          exec: {
+            host: 'gateway',
+            ask: 'off',
+            security: 'standard'
+          }
+        }
+      }
+    }
+  };
+
   // Apply gateway defaults (force these settings)
   forceMerge(config, gatewayDefaults);
   console.log('✅ Gateway settings configured');
+
+  // Apply agent defaults (tools, permissions) - use deepMerge to preserve user customizations
+  deepMerge(config, agentDefaults);
+  console.log('✅ Agent tools configured');
 
   // Check for Ollama configuration
   const ollamaUrl = process.env.OLLAMA_BASE_URL;
